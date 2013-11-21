@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 2.6)
 project (grape)
 
-add_definitions("-std=c++0x -Wreorder -Wreturn-type")
+add_definitions("-std=c++0x -Wreorder -Wreturn-type -Wunused-variable")
 
 # The version number.
 FILE (READ "${CMAKE_CURRENT_SOURCE_DIR}/debian/changelog" DEBCHANGELOG)
@@ -23,17 +23,24 @@ locate_library(LIBEV "ev++.h" "ev" "libev")
 locate_library(MSGPACK "msgpack.hpp" "msgpack")
 
 set(GRAPE_COMMON_LIBRARIES
-	${elliptics_cpp_LIBRARY}
-	${CocaineNative_LIBRARIES}
-	${Cocaine_LIBRARY}
-	${LIBEV_LIBRARIES}
-	${Boost_SYSTEM_LIBRARY}
-	${Boost_THREAD_LIBRARY}
+  ${elliptics_cpp_LIBRARY}
+  ${CocaineNative_LIBRARIES}
+  ${Cocaine_LIBRARY}
+  ${LIBEV_LIBRARIES}
+  ${Boost_SYSTEM_LIBRARY}
+  ${Boost_THREAD_LIBRARY}
 )
 
 install(DIRECTORY include/ DESTINATION include)
 
 include_directories(${PROJECT_SOURCE_DIR}/include ${elliptics_INCLUDE_DIRS} ${CocaineNative_INCLUDE_DIRS} ${LIBEV_INCLUDE_DIRS})
+
+########################
+# TESTING
+########################
+
+enable_testing()
+add_subdirectory(test)
 
 add_subdirectory(src/data_array)
 add_subdirectory(src/driver)

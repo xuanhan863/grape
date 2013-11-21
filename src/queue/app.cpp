@@ -8,11 +8,11 @@
 
 namespace {
 
-uint64_t microseconds_now() {
-	timespec t;
-	clock_gettime(CLOCK_MONOTONIC_RAW, &t);
-	return t.tv_sec * 1000000 + t.tv_nsec / 1000;
-}
+// inline uint64_t microseconds_now() {
+// 	timespec t;
+// 	clock_gettime(CLOCK_MONOTONIC_RAW, &t);
+// 	return t.tv_sec * 1000000 + t.tv_nsec / 1000;
+// }
 
 template <unsigned N>
 double modified_moving_average(double avg, double input) {
@@ -23,6 +23,7 @@ double modified_moving_average(double avg, double input) {
 
 double exponential_moving_average(double avg, double input, double alpha) {
 	return alpha * input + (1.0 - alpha) * avg;
+	//return avg + alpha * (input - avg);
 }
 
 struct rate_stat
@@ -152,12 +153,15 @@ void queue_app_context::process(const std::string &cocaine_event, const std::vec
 			m_push_time.start();
 			m_queue->push(d);
 			m_push_time.stop();
-			COCAINE_LOG_INFO(m_log, "push time %ld", microseconds_now() - m_push_time.start_time);
+			COCAINE_LOG_INFO(m_log, "%s, push time %ld",
+					action_id.c_str(),
+					microseconds_now() - m_push_time.start_time
+					);
 			m_push_rate.update(1);
 		}
 		m_queue->final(context, ioremap::elliptics::data_pointer());
 
-	} else if (event == "pop-multi" || event == "pop-multiple-string") {
+	} else if (event == "pop-multi") {
 		int num = stoi(context.data().to_string());
 
 		m_pop_time.start();
@@ -287,13 +291,13 @@ void queue_app_context::process(const std::string &cocaine_event, const std::vec
 		root.AddMember("low-id", state.chunk_id_ack, root.GetAllocator());
 
 		root.AddMember("push.count", st.push_count, root.GetAllocator());
-		root.AddMember("push.rate", m_push_rate.get(), root.GetAllocator());
-		root.AddMember("push.time", m_push_time.get(), root.GetAllocator());
 		root.AddMember("pop.count", st.pop_count, root.GetAllocator());
-		root.AddMember("pop.rate", m_pop_rate.get(), root.GetAllocator());
-		root.AddMember("pop.time", m_pop_time.get(), root.GetAllocator());
 		root.AddMember("ack.count", st.ack_count, root.GetAllocator());
+		root.AddMember("push.rate", m_push_rate.get(), root.GetAllocator());
+		root.AddMember("pop.rate", m_pop_rate.get(), root.GetAllocator());
 		root.AddMember("ack.rate", m_ack_rate.get(), root.GetAllocator());
+		root.AddMember("push.time", m_push_time.get(), root.GetAllocator());
+		root.AddMember("pop.time", m_pop_time.get(), root.GetAllocator());
 		root.AddMember("ack.time", m_ack_time.get(), root.GetAllocator());
 		root.AddMember("timeout.count", st.timeout_count, root.GetAllocator());
 		root.AddMember("state.write_count", st.state_write_count, root.GetAllocator());

@@ -1,3 +1,48 @@
+grape (0.7.5) unstable; urgency=low
+
+  * python scripts to manage queue
+  * driver: more accurate measurment of worker first processing time
+  * driver: more gradual rate speed up
+  * driver: fixed reaction to timeout errors
+  * driver: fixed reaction on worker error
+  * driver: {wait,check}-timeout and high-rate-limit settings
+  * driver: initial-rate-boost setting
+  * queue: true bulk ack, writes meta once per call
+  * queue: much fewer chunk reads when chunk is partially full
+  * queue: fixed tight read repeat loop on "chunk data unavailable" error
+  * queue: fixed iteration over unacked entries (replay_iterator)
+  * queue: guard for over-acking
+  * queue: more precise timeout checking
+  * queue: ack-wait-timeouts and timeout-check-period settings
+  * queue: a bit more logging (write meta, popping)
+  * queue: added queue id into all log output
+  * concurrent_pump: added way to stop runloop if needed
+  * concurrent-pump: added bulk_queue_reader variant
+
+ -- Ivan Chelubeev <ijon@yandex-team.ru>  Thu, 21 Nov 2013 22:16:36 +0400
+
+grape (0.7.0) unstable; urgency=low
+
+  * Adaptive flow control in the queue driver
+  * Configurable request size in driver (request-size setting)
+  * Fixed queue crash on chunk data unavailability
+  * Check chunks metadata availability on start, refuse to start if its not
+  * Queue now can run in one group and store data in the other(s)
+    (storage-groups setting)
+  * Added wait timeouts everywhere (wait-timeout setting) 
+  * Write waits removed again (we'll see what would happen)
+  * Concurrent runloop isolated into concurrent_pump.hpp
+  * ping command and way to disable queue item acking for testerhead-cpp
+  * libdata_array was placed incorrectly in grape-components, moved to grape
+
+ -- Ivan Chelubeev <ijon@yandex-team.ru>  Wed, 21 Aug 2013 18:46:12 +0400
+
+grape (0.6.25) unstable; urgency=low
+
+  * Fixed garbage read results that could occur under stress
+
+ -- Ivan Chelubeev <ijon@yandex-team.ru>  Wed, 31 Jul 2013 19:55:51 +0400
+
 grape (0.6.24) unstable; urgency=low
 
   * New queue methods: clear and stats-clear
