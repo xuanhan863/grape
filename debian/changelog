@@ -1,4 +1,4 @@
-grape (0.7.5) unstable; urgency=low
+grape (0.7.6) unstable; urgency=low
 
   * python scripts to manage queue
   * driver: more accurate measurment of worker first processing time
@@ -19,7 +19,7 @@ grape (0.7.5) unstable; urgency=low
   * concurrent_pump: added way to stop runloop if needed
   * concurrent-pump: added bulk_queue_reader variant
 
- -- Ivan Chelubeev <ijon@yandex-team.ru>  Thu, 21 Nov 2013 22:16:36 +0400
+ -- Ivan Chelubeev <ijon@yandex-team.ru>  Tue, 26 Nov 2013 20:19:19 +0400
 
 grape (0.7.0) unstable; urgency=low
 
